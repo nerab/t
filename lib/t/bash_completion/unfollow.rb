@@ -3,17 +3,17 @@ module T
     #
     # Provides suggestions matching ARG when asked for completion of
     #
-    #   t follow ARG
+    #   t unfollow ARG
     #
     # If ARG is nil, all users that Twitter suggests to follow will be provided.
     #
-    class Follow
+    class Unfollow
       def initialize(arg)
         @arg = arg
       end
       
       def suggestions
-        T.t('suggest').split
+        T.t('followings').split
       end
     end
   end

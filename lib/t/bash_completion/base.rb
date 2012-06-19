@@ -1,7 +1,17 @@
 module T
+  def self.t(task)
+    # TODO Do some caching ...
+    %x[bundle exec bin/t #{task}]
+  end
+  
+  #
+  # Test with COMP_LINE="t follow s" bundle exec bin/t-bash_completion 
+  #
   module BashCompletion
     #
     # Modeled roughly after https://github.com/colszowka/rvm-completion/
+    #
+    # Some commands have dedicated completers for their args in the BashCompletion module
     #
     class Base
       def initialize(comp_line)
@@ -21,7 +31,7 @@ module T
           completer = T::BashCompletion.const_get(shell_argument(1).capitalize)
           select(completer.new(shell_argument(2)).suggestions, shell_argument(2))
         rescue NameError
-          []
+          [] # no completer found
         end
       end
   

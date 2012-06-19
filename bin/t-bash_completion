@@ -7,7 +7,6 @@
 #
 # complete -C PATH/TO/t-bash_completion.rb -o default t
 #
-
 require 't'
 require 't/bash_completion'
 
