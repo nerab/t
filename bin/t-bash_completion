@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+#
+# Provides Bash completion for t
+#
+# Enable it with the following line in your .bashrc or similar:
+#
+# complete -C PATH/TO/t-bash_completion.rb -o default t
+#
+
+require 't'
+require 't/bash_completion'
+
+puts T::BashCompletion::Base.new(ENV["COMP_LINE"]).matches
