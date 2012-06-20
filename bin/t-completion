@@ -7,7 +7,6 @@
 #
 # complete -C t-completion -o default t
 #
-require 't'
 require 't/bash_completion'
 
 puts T::BashCompletion::Base.new(ENV["COMP_LINE"]).matches
