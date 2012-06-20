@@ -7,7 +7,7 @@ module T
     #
     class Follow < Base
       def suggestions
-        t('suggest')
+        t('suggest').each_with_object([]){|u,a| a << u.screen_name}
       end
     end
   end

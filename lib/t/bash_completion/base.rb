@@ -1,14 +1,22 @@
 module T
   #
-  # Test with COMP_LINE="t follow s" bundle exec bin/t-completion
+  # Test in bash with 
   #
-  module BashCompletion
+  #   COMP_LINE="t follow s" bundle exec bin/t-completion
+  #
+  # You may also enable it for testing (without installing the gem) like this:
+  # 
+  #   complete -C "bundle exec bin/t-completion" -o default t
+  #
+  module BashCompletion    
     #
     # Modeled roughly after https://github.com/colszowka/rvm-completion/
     #
     # Some commands have dedicated completers for their args in the BashCompletion module
     #
     class Base
+      include Spinner
+      
       def initialize(comp_line)
         @comp_line = comp_line
       end
@@ -23,9 +31,18 @@ module T
           # Look up the completer for shell_argument(2) and use it, or return the empty result.
           begin
             completer = T::BashCompletion.const_get(shell_argument(1).capitalize).new(shell_argument(2))
-            select(completer.suggestions, shell_argument(2))
+            suggestions = spinning(lambda{
+              completer.suggestions
+            })
+            select(suggestions, shell_argument(2))
+          rescue Interrupt
+            [] # user interrupt, silently return nothing
           rescue NameError
-            [] # no completer found
+            [] # no completer found, silently return nothing
+          rescue
+            # something unexpected happened
+            STDERR.puts $!.message
+            STDERR.puts $!.backtrace
           end
         end
       end

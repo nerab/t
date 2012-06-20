@@ -7,7 +7,7 @@ module T
     #
     class Unfollow < Base
       def suggestions
-        t('followings')
+        t('followings').each_with_object([]){|u,a| a << u.screen_name}
       end
     end
   end

@@ -10,7 +10,7 @@ module T
       # "In order to send a direct message to another Twitter user, that person must be following you."
       #
       def suggestions
-        t('followers')
+        t('followers').each_with_object([]){|u,a| a << u.screen_name}
       end
     end
   end
