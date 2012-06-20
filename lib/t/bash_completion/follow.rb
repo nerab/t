@@ -7,13 +7,13 @@ module T
     #
     # If ARG is nil, all users that Twitter suggests to follow will be provided.
     #
-    class Follow
+    class Follow < Base
       def initialize(arg)
         @arg = arg
       end
       
       def suggestions
-        T.t('suggest').split
+        t('suggest')
       end
     end
   end

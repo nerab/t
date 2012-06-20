@@ -7,7 +7,7 @@ module T
     #
     # If ARG is nil, all users that Twitter suggests to follow will be provided.
     #
-    class Dm
+    class Dm < Base
       def initialize(arg)
         @arg = arg
       end
@@ -16,7 +16,7 @@ module T
       # "In order to send a direct message to another Twitter user, that person must be following you."
       #
       def suggestions
-        T.t('followers').split
+        t('followers')
       end
     end
   end

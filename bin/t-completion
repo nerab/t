@@ -5,7 +5,7 @@
 #
 # Enable it with the following line in your .bashrc or similar:
 #
-# complete -C PATH/TO/t-bash_completion.rb -o default t
+# complete -C t-completion -o default t
 #
 require 't'
 require 't/bash_completion'

@@ -1,11 +1,6 @@
 module T
-  def self.t(task)
-    # TODO Do some caching ...
-    %x[bundle exec bin/t #{task}]
-  end
-  
   #
-  # Test with COMP_LINE="t follow s" bundle exec bin/t-bash_completion 
+  # Test with COMP_LINE="t follow s" bundle exec bin/t-completion 
   #
   module BashCompletion
     #
@@ -26,14 +21,35 @@ module T
         end
     
         # We have the command in shell_argument(1) now
-        # Let's look up the completer for shell_argument(2)
+        # Look up the completer for shell_argument(2) and use it, or return the empty result.
         begin
-          completer = T::BashCompletion.const_get(shell_argument(1).capitalize)
-          select(completer.new(shell_argument(2)).suggestions, shell_argument(2))
+          completer = T::BashCompletion.const_get(shell_argument(1).capitalize).new(shell_argument(2))
+          select(completer.suggestions, shell_argument(2))
         rescue NameError
           [] # no completer found
         end
       end
+
+      protected
+
+      def t(task)
+        #
+        # TODO Wrap this like
+        #
+        # muted($stdout){
+        #   T::CLI.new.send(task)
+        # }
+        #
+        # where muted returns the result of the block
+        #
+        orig_stdout = $stdout
+        $stdout = StringIO.new # TODO We really want NullIO here ...
+        result = T::CLI.new.send(task)
+        $stdout = orig_stdout
+        result
+      end
+      
+      private
   
       # Retrieves the shell argument at the specified position, defaults to first argument
       def shell_argument(level = 1)
