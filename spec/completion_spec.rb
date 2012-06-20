@@ -281,5 +281,22 @@ describe T::BashCompletion::Base do
         matches.should_not include 'nerab'
       end
     end
+
+    describe "for follow" do
+      before do
+        stub_get("/1/account/verify_credentials.json").
+          to_return(:body => fixture("sferik.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+        stub_get("/1/users/recommendations.json").
+          with(:query => {:limit => "20", :screen_name => "sferik"}).
+          to_return(:body => fixture("recommendations.json"), :headers => {:content_type => "application/json; charset=utf-8"})
+      end
+      it "suggests new people to follow from Twitter's recommendations" do
+        matches = T::BashCompletion::Base.new('t follow').matches
+
+        matches.should have(5).items
+        matches.should include 'antpires'
+        matches.should_not include 'nerab'
+      end
+    end
   end
 end
