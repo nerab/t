@@ -17,7 +17,7 @@ module T
     class Base
       include Spinner
       
-      def initialize(comp_line)
+      def initialize(comp_line = nil)
         @comp_line = comp_line
       end
 
@@ -83,7 +83,7 @@ module T
       end
 
       def commands
-        T::CLI.all_tasks.each_with_object([]){|t,a| a << t.first}
+        T::BashCompletion::Commands.new.suggestions
       end
 
       # Matches the given (partial?) command against the given collection
