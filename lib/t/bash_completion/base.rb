@@ -31,7 +31,7 @@ module T
           # Look up the completer for shell_argument(2) and use it, or return the empty result.
           begin
             completer = T::BashCompletion.const_get(shell_argument(1).capitalize).new(shell_argument(2))
-            suggestions = spinning(10){completer.suggestions}
+            suggestions = spinning(20){completer.suggestions}
             select(suggestions, shell_argument(2))
           rescue Interrupt
             # user interrupt
